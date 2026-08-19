@@ -1,0 +1,69 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+*.egg
+.eggs/
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Environment files
+.env
+*.env.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Uploads
+uploads/
+
+# Node
+node_modules/
+npm-debug.log*
+
+# Build
+*.pyc
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+temp_venv/
+ppt_venv/
+
+# Pitch deck generation scripts & assets (not part of the app)
+generate_pitch.py
+generate_pitch_advanced.py
+*.pptx
+future.jpg
+problem.jpg
+title_bg.jpg
+
+# Generated testing artifacts and outputs
+testing report/
+excel_items.md
+extracted_criteria.json
+.coverage
+*-journal
+backend/test_resume.pdf
+
+# Ignore local git installations
+portable-git/
+gh-cli/
+*.exe
+*.zip

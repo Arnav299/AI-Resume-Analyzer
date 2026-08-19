@@ -1,0 +1,2 @@
+Bug ID,Date Reported,Reported By,Description,Steps to Reproduce,Severity,Status,Resolution/PR
+BUG-001,2026-07-08,QA Team,Example: OCR fails on scanned PDFs,1. Upload scanned.pdf 2. Wait,High,Open,Investigating Tesseract installation

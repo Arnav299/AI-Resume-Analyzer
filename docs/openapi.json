@@ -1,0 +1,2340 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "AI Resume Analyzer",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/api/health": {
+      "get": {
+        "summary": "Health Check",
+        "operationId": "health_check_api_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Login",
+        "operationId": "login_api_auth_login_post",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_login_api_auth_login_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Token"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/register": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Register",
+        "operationId": "register_api_auth_register_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/me": {
+      "get": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Get Me",
+        "operationId": "get_me_api_auth_me_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/resumes/parse-image": {
+      "post": {
+        "tags": [
+          "resumes"
+        ],
+        "summary": "Parse Resume Image",
+        "description": "OCR an uploaded image (PNG, JPG, WEBP, BMP, TIFF) and return the raw\nextracted text. Intended for the Resume Builder's 'Upload Image' button.\nNo authentication required.",
+        "operationId": "parse_resume_image_api_resumes_parse_image_post",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_parse_resume_image_api_resumes_parse_image_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/resumes/parse-pdf-text": {
+      "post": {
+        "tags": [
+          "resumes"
+        ],
+        "summary": "Parse Resume Pdf Text",
+        "description": "Extract raw text from an uploaded document (PDF/DOCX) and return it.\nIntended for the Resume Builder's 'Upload Resume' button.\nNo authentication required.",
+        "operationId": "parse_resume_pdf_text_api_resumes_parse_pdf_text_post",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_parse_resume_pdf_text_api_resumes_parse_pdf_text_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/resumes/upload": {
+      "post": {
+        "tags": [
+          "resumes"
+        ],
+        "summary": "Upload Resume",
+        "description": "Upload a PDF resume and immediately parse it into the database.",
+        "operationId": "upload_resume_api_resumes_upload_post",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_upload_resume_api_resumes_upload_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResumeUploadResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/resumes/": {
+      "get": {
+        "tags": [
+          "resumes"
+        ],
+        "summary": "Get My Resumes",
+        "description": "Return all active resumes uploaded by the current student.",
+        "operationId": "get_my_resumes_api_resumes__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ResumeResponse"
+                  },
+                  "type": "array",
+                  "title": "Response Get My Resumes Api Resumes  Get"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/resumes/{resume_id}": {
+      "delete": {
+        "tags": [
+          "resumes"
+        ],
+        "summary": "Delete Resume",
+        "description": "Soft-delete a resume by setting is_active = False.",
+        "operationId": "delete_resume_api_resumes__resume_id__delete",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "resume_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Resume Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/resumes/{resume_id}/analyze": {
+      "post": {
+        "tags": [
+          "resumes"
+        ],
+        "summary": "Analyze Resume",
+        "description": "Run the full AI analysis pipeline for a given resume against a target role.\n\nPipeline steps:\n    1. Skill extraction\n    2. Soft skill detection\n    3. Gap analysis (matched / missing skills)\n    4. Completeness check (sections present)\n    5. Readiness score calculation\n    6. Recommendation generation\n    7. Persist AnalysisResult\n    8. Update dashboard metrics",
+        "operationId": "analyze_resume_api_resumes__resume_id__analyze_post",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "resume_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Resume Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AnalysisRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnalysisDetailResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/resumes/bulk-analyze": {
+      "post": {
+        "tags": [
+          "resumes"
+        ],
+        "summary": "Bulk Analyze Resumes",
+        "description": "Bulk process multiple uploaded resumes against requested roles/skills.\nReturns the leaderboard list expected by OrgDashboard.",
+        "operationId": "bulk_analyze_resumes_api_resumes_bulk_analyze_post",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_bulk_analyze_resumes_api_resumes_bulk_analyze_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/BulkAnalysisResponse"
+                  },
+                  "type": "array",
+                  "title": "Response Bulk Analyze Resumes Api Resumes Bulk Analyze Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/analysis/latest/{resume_id}": {
+      "get": {
+        "tags": [
+          "analysis"
+        ],
+        "summary": "Get Latest Analysis",
+        "description": "Return the most recent analysis result for a given resume.",
+        "operationId": "get_latest_analysis_api_analysis_latest__resume_id__get",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "resume_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Resume Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnalysisResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/analysis/history/{resume_id}": {
+      "get": {
+        "tags": [
+          "analysis"
+        ],
+        "summary": "Get Analysis History",
+        "description": "Return all analysis results for a given resume, newest first.",
+        "operationId": "get_analysis_history_api_analysis_history__resume_id__get",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "resume_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Resume Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/analysis/{analysis_id}": {
+      "get": {
+        "tags": [
+          "analysis"
+        ],
+        "summary": "Get Analysis",
+        "description": "Return a single analysis result by ID.",
+        "operationId": "get_analysis_api_analysis__analysis_id__get",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "analysis_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Analysis Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnalysisResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/dashboard/student": {
+      "get": {
+        "tags": [
+          "dashboard"
+        ],
+        "summary": "Get Student Dashboard",
+        "description": "Return aggregated dashboard data for the currently authenticated student.\nComputes metrics live from the database rather than relying on a\npre-aggregated metrics table.",
+        "operationId": "get_student_dashboard_api_dashboard_student_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/dashboard/mentor": {
+      "get": {
+        "tags": [
+          "dashboard"
+        ],
+        "summary": "Get Mentor Dashboard",
+        "description": "Return dashboard data for a mentor \u2014 lists all students and their status.",
+        "operationId": "get_mentor_dashboard_api_dashboard_mentor_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/dashboard/admin": {
+      "get": {
+        "tags": [
+          "dashboard"
+        ],
+        "summary": "Get Admin Dashboard",
+        "description": "Return platform-wide aggregate statistics for admins.",
+        "operationId": "get_admin_dashboard_api_dashboard_admin_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/feedback/": {
+      "post": {
+        "tags": [
+          "feedback"
+        ],
+        "summary": "Submit Feedback",
+        "description": "Submit mentor feedback for an analysis result.",
+        "operationId": "submit_feedback_api_feedback__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FeedbackCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeedbackResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/feedback/{analysis_id}": {
+      "get": {
+        "tags": [
+          "feedback"
+        ],
+        "summary": "Get Feedback For Analysis",
+        "description": "Return all mentor feedback entries for a given analysis result.",
+        "operationId": "get_feedback_for_analysis_api_feedback__analysis_id__get",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "analysis_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Analysis Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FeedbackResponse"
+                  },
+                  "title": "Response Get Feedback For Analysis Api Feedback  Analysis Id  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/career-roles/": {
+      "get": {
+        "tags": [
+          "career-roles"
+        ],
+        "summary": "List Career Roles",
+        "description": "Return all active career roles available for selection.",
+        "operationId": "list_career_roles_api_career_roles__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/CareerRoleResponse"
+                  },
+                  "type": "array",
+                  "title": "Response List Career Roles Api Career Roles  Get"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/learning-path/{role_id}": {
+      "get": {
+        "tags": [
+          "learning-path"
+        ],
+        "summary": "Get Learning Path",
+        "description": "Return learning paths for a given role (or mock if none).",
+        "operationId": "get_learning_path_api_learning_path__role_id__get",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "role_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Role Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LearningPathResponse"
+                  },
+                  "title": "Response Get Learning Path Api Learning Path  Role Id  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/recommendations/": {
+      "get": {
+        "tags": [
+          "recommendations"
+        ],
+        "summary": "Get Recommendations",
+        "description": "Returns AI recommendations and profile improvement tips.",
+        "operationId": "get_recommendations_api_recommendations__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIRecommendationsResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/skills/analysis": {
+      "get": {
+        "tags": [
+          "skills"
+        ],
+        "summary": "Get Skills Analysis",
+        "description": "Returns detailed skills analysis breakdown.",
+        "operationId": "get_skills_analysis_api_skills_analysis_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SkillsAnalysisResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/builder/save": {
+      "post": {
+        "tags": [
+          "builder"
+        ],
+        "summary": "Save Built Resume",
+        "description": "Saves the JSON built resume.",
+        "operationId": "save_built_resume_api_builder_save_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResumeBuilderSaveRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/builder/load": {
+      "get": {
+        "tags": [
+          "builder"
+        ],
+        "summary": "Load Built Resume",
+        "description": "Loads the user's saved JSON built resume.",
+        "operationId": "load_built_resume_api_builder_load_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AIRecommendationsResponse": {
+        "properties": {
+          "career_suggestions": {
+            "items": {
+              "$ref": "#/components/schemas/CareerSuggestionResponse"
+            },
+            "type": "array",
+            "title": "Career Suggestions"
+          },
+          "improvement_tips": {
+            "items": {
+              "$ref": "#/components/schemas/ImprovementTipResponse"
+            },
+            "type": "array",
+            "title": "Improvement Tips"
+          }
+        },
+        "type": "object",
+        "required": [
+          "career_suggestions",
+          "improvement_tips"
+        ],
+        "title": "AIRecommendationsResponse"
+      },
+      "AnalysisDetailResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "resume_id": {
+            "type": "string",
+            "title": "Resume Id"
+          },
+          "target_role_id": {
+            "type": "string",
+            "title": "Target Role Id"
+          },
+          "readiness_score": {
+            "type": "number",
+            "title": "Readiness Score"
+          },
+          "skill_score": {
+            "type": "number",
+            "title": "Skill Score"
+          },
+          "project_score": {
+            "type": "number",
+            "title": "Project Score"
+          },
+          "professional_presence_score": {
+            "type": "number",
+            "title": "Professional Presence Score"
+          },
+          "strengths": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Strengths"
+          },
+          "weaknesses": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Weaknesses"
+          },
+          "recommendation_summary": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Recommendation Summary"
+          },
+          "analyzed_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Analyzed At"
+          },
+          "matched_skills": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Matched Skills"
+          },
+          "missing_skills": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Missing Skills"
+          },
+          "extracted_skills": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Extracted Skills"
+          },
+          "soft_skills": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Soft Skills"
+          },
+          "learning_plan": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Learning Plan"
+          },
+          "quick_wins": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Quick Wins"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "resume_id",
+          "target_role_id",
+          "readiness_score",
+          "skill_score",
+          "project_score",
+          "professional_presence_score",
+          "analyzed_at"
+        ],
+        "title": "AnalysisDetailResponse",
+        "description": "Extended response that also includes the full skill breakdown."
+      },
+      "AnalysisRequest": {
+        "properties": {
+          "resume_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Resume Id"
+          },
+          "target_role_id": {
+            "type": "string",
+            "title": "Target Role Id"
+          },
+          "gemini_api_key": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Gemini Api Key"
+          }
+        },
+        "type": "object",
+        "required": [
+          "target_role_id"
+        ],
+        "title": "AnalysisRequest",
+        "description": "Request body for triggering an analysis run."
+      },
+      "AnalysisResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "resume_id": {
+            "type": "string",
+            "title": "Resume Id"
+          },
+          "target_role_id": {
+            "type": "string",
+            "title": "Target Role Id"
+          },
+          "readiness_score": {
+            "type": "number",
+            "title": "Readiness Score"
+          },
+          "skill_score": {
+            "type": "number",
+            "title": "Skill Score"
+          },
+          "project_score": {
+            "type": "number",
+            "title": "Project Score"
+          },
+          "professional_presence_score": {
+            "type": "number",
+            "title": "Professional Presence Score"
+          },
+          "strengths": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Strengths"
+          },
+          "weaknesses": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Weaknesses"
+          },
+          "recommendation_summary": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Recommendation Summary"
+          },
+          "analyzed_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Analyzed At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "resume_id",
+          "target_role_id",
+          "readiness_score",
+          "skill_score",
+          "project_score",
+          "professional_presence_score",
+          "analyzed_at"
+        ],
+        "title": "AnalysisResponse",
+        "description": "Full analysis result returned to the client."
+      },
+      "Body_bulk_analyze_resumes_api_resumes_bulk_analyze_post": {
+        "properties": {
+          "files": {
+            "items": {
+              "type": "string",
+              "format": "binary"
+            },
+            "type": "array",
+            "title": "Files"
+          },
+          "roles": {
+            "type": "string",
+            "title": "Roles",
+            "default": ""
+          },
+          "skills": {
+            "type": "string",
+            "title": "Skills",
+            "default": ""
+          }
+        },
+        "type": "object",
+        "required": [
+          "files"
+        ],
+        "title": "Body_bulk_analyze_resumes_api_resumes_bulk_analyze_post"
+      },
+      "Body_login_api_auth_login_post": {
+        "properties": {
+          "grant_type": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "password"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Grant Type"
+          },
+          "username": {
+            "type": "string",
+            "title": "Username"
+          },
+          "password": {
+            "type": "string",
+            "title": "Password"
+          },
+          "scope": {
+            "type": "string",
+            "title": "Scope",
+            "default": ""
+          },
+          "client_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Client Id"
+          },
+          "client_secret": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Client Secret"
+          }
+        },
+        "type": "object",
+        "required": [
+          "username",
+          "password"
+        ],
+        "title": "Body_login_api_auth_login_post"
+      },
+      "Body_parse_resume_image_api_resumes_parse_image_post": {
+        "properties": {
+          "file": {
+            "type": "string",
+            "format": "binary",
+            "title": "File"
+          }
+        },
+        "type": "object",
+        "required": [
+          "file"
+        ],
+        "title": "Body_parse_resume_image_api_resumes_parse_image_post"
+      },
+      "Body_parse_resume_pdf_text_api_resumes_parse_pdf_text_post": {
+        "properties": {
+          "file": {
+            "type": "string",
+            "format": "binary",
+            "title": "File"
+          }
+        },
+        "type": "object",
+        "required": [
+          "file"
+        ],
+        "title": "Body_parse_resume_pdf_text_api_resumes_parse_pdf_text_post"
+      },
+      "Body_upload_resume_api_resumes_upload_post": {
+        "properties": {
+          "file": {
+            "type": "string",
+            "format": "binary",
+            "title": "File"
+          }
+        },
+        "type": "object",
+        "required": [
+          "file"
+        ],
+        "title": "Body_upload_resume_api_resumes_upload_post"
+      },
+      "BuilderCertification": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "issuer": {
+            "type": "string",
+            "title": "Issuer"
+          },
+          "date": {
+            "type": "string",
+            "title": "Date"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "issuer",
+          "date"
+        ],
+        "title": "BuilderCertification"
+      },
+      "BuilderEducation": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "institution": {
+            "type": "string",
+            "title": "Institution"
+          },
+          "degree": {
+            "type": "string",
+            "title": "Degree"
+          },
+          "year": {
+            "type": "string",
+            "title": "Year"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "institution",
+          "degree",
+          "year"
+        ],
+        "title": "BuilderEducation"
+      },
+      "BuilderExperience": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "company": {
+            "type": "string",
+            "title": "Company"
+          },
+          "role": {
+            "type": "string",
+            "title": "Role"
+          },
+          "startDate": {
+            "type": "string",
+            "title": "Startdate"
+          },
+          "endDate": {
+            "type": "string",
+            "title": "Enddate"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "company",
+          "role",
+          "startDate",
+          "endDate",
+          "description"
+        ],
+        "title": "BuilderExperience"
+      },
+      "BuilderPersonalInfo": {
+        "properties": {
+          "fullName": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fullname",
+            "default": ""
+          },
+          "jobTitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Jobtitle",
+            "default": ""
+          },
+          "email": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Email",
+            "default": ""
+          },
+          "phone": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Phone",
+            "default": ""
+          },
+          "location": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Location",
+            "default": ""
+          },
+          "linkedin": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Linkedin",
+            "default": ""
+          },
+          "portfolio": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Portfolio",
+            "default": ""
+          },
+          "photo": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Photo"
+          }
+        },
+        "type": "object",
+        "title": "BuilderPersonalInfo"
+      },
+      "BuilderProject": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "link": {
+            "type": "string",
+            "title": "Link"
+          },
+          "tools": {
+            "type": "string",
+            "title": "Tools"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "link",
+          "tools",
+          "description"
+        ],
+        "title": "BuilderProject"
+      },
+      "BulkAnalysisResponse": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "overall": {
+            "type": "number",
+            "title": "Overall"
+          },
+          "skillMatch": {
+            "type": "number",
+            "title": "Skillmatch"
+          },
+          "experience": {
+            "type": "number",
+            "title": "Experience"
+          },
+          "ats": {
+            "type": "number",
+            "title": "Ats"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "missing": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Missing"
+          },
+          "matched": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Matched"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "overall",
+          "skillMatch",
+          "experience",
+          "ats",
+          "status",
+          "missing",
+          "matched"
+        ],
+        "title": "BulkAnalysisResponse",
+        "description": "Response schema for a single candidate in the bulk analysis leaderboard."
+      },
+      "CareerRoleResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "role_name": {
+            "type": "string",
+            "title": "Role Name"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "industry_category": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Industry Category"
+          },
+          "is_active": {
+            "type": "boolean",
+            "title": "Is Active",
+            "default": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "role_name"
+        ],
+        "title": "CareerRoleResponse"
+      },
+      "CareerSuggestionResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "match_percentage": {
+            "type": "integer",
+            "title": "Match Percentage"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "tags": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Tags"
+          },
+          "demand": {
+            "type": "string",
+            "title": "Demand"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "match_percentage",
+          "description",
+          "tags",
+          "demand"
+        ],
+        "title": "CareerSuggestionResponse"
+      },
+      "FeedbackCreate": {
+        "properties": {
+          "analysis_result_id": {
+            "type": "string",
+            "title": "Analysis Result Id"
+          },
+          "rating": {
+            "type": "integer",
+            "title": "Rating"
+          },
+          "comments": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Comments"
+          },
+          "improvement_actions": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Improvement Actions"
+          }
+        },
+        "type": "object",
+        "required": [
+          "analysis_result_id",
+          "rating"
+        ],
+        "title": "FeedbackCreate"
+      },
+      "FeedbackResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "analysis_result_id": {
+            "type": "string",
+            "title": "Analysis Result Id"
+          },
+          "mentor_id": {
+            "type": "string",
+            "title": "Mentor Id"
+          },
+          "rating": {
+            "type": "integer",
+            "title": "Rating"
+          },
+          "comments": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Comments"
+          },
+          "improvement_actions": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Improvement Actions"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "analysis_result_id",
+          "mentor_id",
+          "rating",
+          "comments",
+          "improvement_actions",
+          "created_at"
+        ],
+        "title": "FeedbackResponse"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "ImprovementTipResponse": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "priority": {
+            "type": "string",
+            "title": "Priority"
+          }
+        },
+        "type": "object",
+        "required": [
+          "title",
+          "description",
+          "priority"
+        ],
+        "title": "ImprovementTipResponse"
+      },
+      "LearningPathResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "estimated_duration": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Estimated Duration"
+          },
+          "difficulty_level": {
+            "type": "string",
+            "title": "Difficulty Level"
+          },
+          "skills": {
+            "items": {
+              "$ref": "#/components/schemas/LearningPathSkillResponse"
+            },
+            "type": "array",
+            "title": "Skills",
+            "default": []
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "description",
+          "estimated_duration",
+          "difficulty_level"
+        ],
+        "title": "LearningPathResponse"
+      },
+      "LearningPathSkillResponse": {
+        "properties": {
+          "skill_name": {
+            "type": "string",
+            "title": "Skill Name"
+          },
+          "difficulty_level": {
+            "type": "string",
+            "title": "Difficulty Level"
+          },
+          "estimated_duration": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Estimated Duration"
+          },
+          "resources_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Resources Url"
+          }
+        },
+        "type": "object",
+        "required": [
+          "skill_name",
+          "difficulty_level"
+        ],
+        "title": "LearningPathSkillResponse"
+      },
+      "ResumeBuilderSaveRequest": {
+        "properties": {
+          "personalInfo": {
+            "$ref": "#/components/schemas/BuilderPersonalInfo"
+          },
+          "summary": {
+            "type": "string",
+            "title": "Summary"
+          },
+          "skills": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Skills"
+          },
+          "experience": {
+            "items": {
+              "$ref": "#/components/schemas/BuilderExperience"
+            },
+            "type": "array",
+            "title": "Experience"
+          },
+          "education": {
+            "items": {
+              "$ref": "#/components/schemas/BuilderEducation"
+            },
+            "type": "array",
+            "title": "Education"
+          },
+          "projects": {
+            "items": {
+              "$ref": "#/components/schemas/BuilderProject"
+            },
+            "type": "array",
+            "title": "Projects"
+          },
+          "certifications": {
+            "items": {
+              "$ref": "#/components/schemas/BuilderCertification"
+            },
+            "type": "array",
+            "title": "Certifications"
+          }
+        },
+        "type": "object",
+        "required": [
+          "personalInfo",
+          "summary",
+          "skills",
+          "experience",
+          "education",
+          "projects",
+          "certifications"
+        ],
+        "title": "ResumeBuilderSaveRequest"
+      },
+      "ResumeResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "student_profile_id": {
+            "type": "string",
+            "title": "Student Profile Id"
+          },
+          "original_filename": {
+            "type": "string",
+            "title": "Original Filename"
+          },
+          "upload_status": {
+            "type": "string",
+            "title": "Upload Status"
+          },
+          "uploaded_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Uploaded At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "student_profile_id",
+          "original_filename",
+          "upload_status",
+          "uploaded_at"
+        ],
+        "title": "ResumeResponse"
+      },
+      "ResumeUploadResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "filename": {
+            "type": "string",
+            "title": "Filename"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "filename",
+          "message"
+        ],
+        "title": "ResumeUploadResponse"
+      },
+      "SkillCategoryResponse": {
+        "properties": {
+          "category": {
+            "type": "string",
+            "title": "Category"
+          },
+          "skills": {
+            "items": {
+              "$ref": "#/components/schemas/SkillDetail"
+            },
+            "type": "array",
+            "title": "Skills"
+          }
+        },
+        "type": "object",
+        "required": [
+          "category",
+          "skills"
+        ],
+        "title": "SkillCategoryResponse"
+      },
+      "SkillDetail": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "level": {
+            "type": "integer",
+            "title": "Level"
+          },
+          "matched": {
+            "type": "boolean",
+            "title": "Matched"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "level",
+          "matched"
+        ],
+        "title": "SkillDetail"
+      },
+      "SkillsAnalysisResponse": {
+        "properties": {
+          "overall_match": {
+            "type": "integer",
+            "title": "Overall Match"
+          },
+          "categories": {
+            "items": {
+              "$ref": "#/components/schemas/SkillCategoryResponse"
+            },
+            "type": "array",
+            "title": "Categories"
+          }
+        },
+        "type": "object",
+        "required": [
+          "overall_match",
+          "categories"
+        ],
+        "title": "SkillsAnalysisResponse"
+      },
+      "Token": {
+        "properties": {
+          "access_token": {
+            "type": "string",
+            "title": "Access Token"
+          },
+          "token_type": {
+            "type": "string",
+            "title": "Token Type"
+          },
+          "role": {
+            "type": "string",
+            "title": "Role"
+          },
+          "user_id": {
+            "type": "string",
+            "title": "User Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "access_token",
+          "token_type",
+          "role",
+          "user_id"
+        ],
+        "title": "Token"
+      },
+      "UserCreate": {
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "title": "Email"
+          },
+          "full_name": {
+            "type": "string",
+            "title": "Full Name"
+          },
+          "role": {
+            "type": "string",
+            "title": "Role"
+          },
+          "password": {
+            "type": "string",
+            "title": "Password"
+          }
+        },
+        "type": "object",
+        "required": [
+          "email",
+          "full_name",
+          "role",
+          "password"
+        ],
+        "title": "UserCreate"
+      },
+      "UserResponse": {
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "title": "Email"
+          },
+          "full_name": {
+            "type": "string",
+            "title": "Full Name"
+          },
+          "role": {
+            "type": "string",
+            "title": "Role"
+          },
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "is_active": {
+            "type": "boolean",
+            "title": "Is Active"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "email",
+          "full_name",
+          "role",
+          "id",
+          "is_active",
+          "created_at"
+        ],
+        "title": "UserResponse"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    },
+    "securitySchemes": {
+      "OAuth2PasswordBearer": {
+        "type": "oauth2",
+        "flows": {
+          "password": {
+            "scopes": {},
+            "tokenUrl": "/api/auth/login"
+          }
+        }
+      }
+    }
+  }
+}

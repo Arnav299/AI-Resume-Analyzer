@@ -1,0 +1,32 @@
+services:
+  # Backend Web Service
+  - type: web
+    name: ai-resume-backend
+    env: docker
+    dockerfilePath: backend/Dockerfile
+    repo: https://github.com/Innovant-MDM/AI-Resume-Analyzer # Replace with actual repo if forked
+    branch: main
+    autoDeploy: false
+    envVars:
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_KEY
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+
+  # Frontend Static Site
+  - type: web
+    name: ai-resume-frontend
+    env: static
+    repo: https://github.com/Innovant-MDM/AI-Resume-Analyzer # Replace with actual repo if forked
+    branch: main
+    buildCommand: npm install && npm run build
+    staticPublishPath: frontend/dist
+    autoDeploy: false
+    envVars:
+      - key: VITE_API_URL
+        fromService:
+          type: web
+          name: ai-resume-backend
+          envVarKey: RENDER_EXTERNAL_URL

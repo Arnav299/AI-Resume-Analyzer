@@ -1,0 +1,23 @@
+
+C:\Users\User\Documents\Innovant\Internship\Project Dev\Development\AI Resume Analyser\frontend\src\components\UploadArea.jsx
+  2:10  error  'Upload' is defined but never used. Allowed unused vars must match /^React$/u       no-unused-vars
+  2:18  error  'File' is defined but never used. Allowed unused vars must match /^React$/u         no-unused-vars
+  2:24  error  'X' is defined but never used. Allowed unused vars must match /^React$/u            no-unused-vars
+  2:27  error  'CheckCircle' is defined but never used. Allowed unused vars must match /^React$/u  no-unused-vars
+  2:40  error  'AlertCircle' is defined but never used. Allowed unused vars must match /^React$/u  no-unused-vars
+
+C:\Users\User\Documents\Innovant\Internship\Project Dev\Development\AI Resume Analyser\frontend\src\context\AuthContext.jsx
+  33:14  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+C:\Users\User\Documents\Innovant\Internship\Project Dev\Development\AI Resume Analyser\frontend\src\pages\AnalyzePage.jsx
+  63:9  error  'color' is assigned a value but never used. Allowed unused vars must match /^React$/u  no-unused-vars
+
+C:\Users\User\Documents\Innovant\Internship\Project Dev\Development\AI Resume Analyser\frontend\src\pages\OrgDashboard.jsx
+  81:7  error  'ScorePill' is assigned a value but never used. Allowed unused vars must match /^React$/u  no-unused-vars
+
+C:\Users\User\Documents\Innovant\Internship\Project Dev\Development\AI Resume Analyser\frontend\src\pages\ResumeBuilder.jsx
+  35:16  error  'e' is defined but never used                                                                   no-unused-vars
+  71:9   error  'handleDownload' is assigned a value but never used. Allowed unused vars must match /^React$/u  no-unused-vars
+
+✖ 10 problems (9 errors, 1 warning)
+

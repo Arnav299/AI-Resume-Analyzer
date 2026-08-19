@@ -1,0 +1,63 @@
+# =============================================================================
+# backend/requirements.txt — Python dependencies
+# =============================================================================
+
+# FastAPI & ASGI
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+python-multipart==0.0.19
+
+# Database
+sqlalchemy[asyncio]==2.0.36
+asyncpg==0.30.0
+aiosqlite==0.20.0
+alembic==1.14.1
+
+# Settings & Validation
+pydantic==2.10.3
+pydantic-settings==2.7.0
+email-validator==2.3.0
+
+
+# Security
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+bcrypt==3.2.2
+
+# PDF Parsing
+pdfplumber==0.11.4
+PyMuPDF==1.25.1
+
+# Image OCR (Resume Builder image upload)
+opencv-python==4.10.0.84
+pytesseract==0.3.13
+pillow==11.1.0
+
+# HTTP client (for optional AI calls)
+httpx==0.28.1
+
+# Logging & utils
+python-dotenv==1.0.1
+structlog==24.4.0
+
+# Testing
+pytest==8.3.4
+pytest-asyncio==0.24.0
+httpx==0.28.1
+
+# New Features
+slowapi==0.1.9
+reportlab==4.3.1
+aiocache==0.12.3
+
+# Background Tasks & Queues
+celery==5.4.0
+redis==5.2.1
+
+# Stress Testing
+locust==2.32.4
+
+# Advanced Parsing
+mammoth==1.8.0
+filetype==1.2.0
+pillow-heif>=0.14.0
